@@ -79,6 +79,32 @@ About 11 K lines of C++ code built for statistical modeling:
 
 - Memory and computationally efficient for pooled models.
 
+## Change statistics
+
+- Change statistics are at the core of ERGMs (Exponential-Family Random Graph Models).
+
+- Two great applications:(i) make counting easy and (ii) can be used for sampling from ERGM likelihood function.
+
+## Change statistics formals
+
+- The change statistic is defined as a real-valued vector where the $k$-th entry equals the observed change when the $ij$-th tie is removed from the network. Formally:
+
+    $$
+    \delta(y_{ij}: 0\to 1) = s(\mathbf{y})_{ij}^+ - s(\mathbf{y})_{ij}^-
+    $$
+
+  Where $s(\cdot)$ is a function returning graph $\mathbf{y}$'s observed statistics, and $s(\mathbf{y})_{ij}^+$ represents its value when $y_{ij} = 1$.
+
+## Examples of change statistics
+
+- Number of edges:
+
+- Reciprocity (mutuality):
+
+- Transitive triples:
+
+- Gender homophily:
+
 
 ## Current implemented models
 
@@ -89,6 +115,23 @@ About 11 K lines of C++ code built for statistical modeling:
 - Motif counting applied to counting **"*imaginary motifs*"** in Cognitive Social Structures [CSS] (with [Dr. Kyosuke Tanaka](https://kyosuketanaka.com/), submitted to [Social Networks](https://www.sciencedirect.com/journal/social-networks)).
 
 - Modeling the **evolution of gene functions** in terms of transition between functional states (research grant submitted to National Human Genome Research Institute [NHGRI](https://genome.gov)).
+
+## ERGMs
+
+::: {.columns style="font-size: 24pt"}
+
+::: {.column width="40%"}
+- A fundamental feature of pooled models (multiple graphs/arrays).
+- A single model may feature thousands of networks.
+- But if all have the same number of nodes (and other features)... we only need to enumerate once.
+:::
+
+::: {.column width="60%"}
+<img src="https://github.com/USCbiostats/barry/raw/209575e80a6de7bba1937344f6fbf6a89e389447/design/ergm-computing.svg" width="100%">
+
+:::
+
+:::
 
 # Final words
 
