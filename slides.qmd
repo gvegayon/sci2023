@@ -1,0 +1,117 @@
+---
+title: "<p style=\"font-size: 48pt\">Network visualization (in R) with \"netplot\" and motif counting (in C++) with \"barry\"</p>"
+subtitle: SCI Seminar
+title-block-banner: true
+author: George G. Vega Yon, Ph.D.
+date: April 7, 2023
+institute:
+    - Division of Epidemiology
+    - University of Utah
+format:
+  revealjs:
+    slide-number: true
+    show-slide-number: all
+    transition: slide
+    transition-speed: fast
+    reveal_plugins: ["menu"]
+    footer: george.vegayon at utah -- https://ggvy.cl
+    embed-resources: true
+---
+
+## Whoami
+
+- Research Assistant Professor of Epidemiology.
+
+- Ph.D. in Biostatistics from USC and M.Sc. in Economics from Caltech.
+
+- Methodologist working at the intersection between Statistical Computing and Complex Systems Modeling.
+
+# Network visualization with netplot
+
+::: {.absolute bottom=-200 right=0}
+You can download the slides from<br>[ggv.cl/slides/sci2023](https://ggv.cl/slides/sci2023)
+:::
+
+## **netplot** In a nutshell
+
+- **What**: An R package for network visualization inspired by [Gephi](https://gephi.org).
+
+- **Why**: Opinionated way to visualize graphs.
+
+- **Where**: You can get the dev version on GitHub ([USCCANA/netplot](https://github.com/USCCANA/netplot)) or the stable version on CRAN.
+
+## Main features
+
+- Visualization engine: The `grid` system (same used by [`ggplot2`]().)
+
+- Layout algorithms: Default uses `igraph`'s layout.
+
+- Vertex sizes: Relative to the drawing area.
+
+## Example code+output
+
+
+## Challenges and Next steps
+
+- Speed up the code: `grid` objects can be computationally expensive to build.
+
+- Porter Bischof (Undergrad from UVU) will contribute and present at the INSNA Sunbelt conference (flagship conference of SNA).
+
+# Counting motifs with barry
+
+## **barry** in a nutshell
+
+- **What**: A C++ header-only template library for motif counting (and more.)
+
+- **Why**: Implement Discrete Exponential Family Models [DEFMs] for phylogenetics and social networks analysis.
+
+- **Where**: You can get it on GitHub ([USCBiostats/barry](https://github.com/USCbiostats/barry))
+
+## Main features
+
+About 11 K lines of C++ code built for statistical modeling:
+
+- Motif count using change statistics (we will return to that.)
+
+- Full and constrained enumeration of 0/1 arrays.
+
+- Computes probability function for Discrete Exponential-Family Models [DEFMs].
+
+- Memory and computationally efficient for pooled models.
+
+
+## Current implemented models
+
+- Exponential-Family Random Graph Models [**ERGMs**].
+
+- **DEFMs** for multiple correlated outcomes (Markov Random Fields; on development with Drs. [MJ Pugh](https://medicine.utah.edu/internal-medicine/epidemiology/research-programs/torch) and [Tom Valente](https://keck.usc.edu/faculty-search/thomas-william-valente/).)
+
+- Motif counting applied to counting **"*imaginary motifs*"** in Cognitive Social Structures [CSS] (with [Dr. Kyosuke Tanaka](https://kyosuketanaka.com/), submitted to [Social Networks](https://www.sciencedirect.com/journal/social-networks)).
+
+- Modeling the **evolution of gene functions** in terms of transition between functional states (research grant submitted to National Human Genome Research Institute [NHGRI](https://genome.gov)).
+
+# Final words
+
+## Today's talk
+
+- The netplot R package for graph visualization.
+
+- barry: Your go-to motif accountant.
+
+## Other projects
+
+![](https://github.com/gvegayon/gvegayon/raw/887c6a31e950733f9ba48a039b8636eb91629b63/hexlogos.png)
+
+<p align="center">
+[**`fmcmc`**](https://cran.r-project.org/package=fmcmc) |
+[**`ergmito`**](https://cran.r-project.org/package=ergmito) |
+[**`aphylo`**](https://cran.r-project.org/package=aphylo) |
+[**`netdiffuseR`**](https://cran.r-project.org/package=netdiffuseR) |
+[**`ABCoptim`**](https://cran.r-project.org/package=ABCoptim) <br>
+[**`slurmR`**](https://cran.r-project.org/package=slurmR) |
+[**`barry`**](https://github.com/USCbiostats/barry) |
+[**`rgexf`**](https://cran.r-project.org/package=rgexf) |
+[**`rgexf`**](https://github.com/USCbiostats/geese)
+</p>
+
+## Thanks!
