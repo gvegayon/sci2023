@@ -50,6 +50,62 @@ You can download the slides from<br>[ggv.cl/slides/sci2023](https://ggv.cl/slide
 
 ## Example code+output
 
+```{r}
+#| label: figure
+#| echo: false
+#| warning: false
+#| cache: true  
+#| fig-cap: 'The personal friendship network of a faculty of a UK university, consisting of 81 vertices (individuals) and 817 directed and weighted connections. The school affiliation of each individual is stored as a vertex attribute. This dataset can serve as a testbed for community detection algorithms.'
+library(igraph)
+library(netplot)
+data("UKfaculty", package="igraphdata")
+
+# Vertex colors f(group)
+vcols <- V(UKfaculty)$Group 
+vcols <- palette.colors(
+  n = length(unique(vcols))
+)[vcols]
+
+set.seed(323)
+# Netplot call
+nplot(
+  UKfaculty,
+  edge.line.breaks = 20,
+  vertex.color     = vcols
+  )
+```
+
+## How?
+
+::: {style="font-size: 90%"}
+
+```{r}
+#| label: reproduce
+#| echo: true
+#| output-location: column
+#| code-line-numbers: 15-20
+library(netplot)
+library(igraph)
+
+library(igraphdata)
+data("UKfaculty")
+
+# Vertex colors f(group)
+vcols <- V(UKfaculty)$Group 
+vcols <- palette.colors(
+  n = length(unique(vcols))
+)[vcols]
+
+set.seed(323)
+# Netplot call
+nplot(
+  UKfaculty,
+  edge.line.breaks = 20,
+  vertex.color     = vcols
+  )
+```
+
+:::
 
 ## Challenges and Next steps
 
@@ -95,15 +151,148 @@ About 11 K lines of C++ code built for statistical modeling:
 
   Where $s(\cdot)$ is a function returning graph $\mathbf{y}$'s observed statistics, and $s(\mathbf{y})_{ij}^+$ represents its value when $y_{ij} = 1$.
 
+## Formals 2
+
+\newcommand{\sufstats}[1]{s\left(#1\right)}
+\renewcommand{\exp}[1]{\mbox{exp}\left\{#1\right\}}
+\renewcommand{\log}[1]{\mbox{log}\left\{#1\right\}}
+\newcommand{\transpose}[1]{{#1}^\mathbf{t}}
+\renewcommand{\t}[1]{\transpose{#1}}
+
+\newcommand{\s}[1]{\sufstats{#1}}
+\newcommand{\SUFF}{\mathcal{S}}
+\newcommand{\Suff}{\mathbf{S}}
+\newcommand{\suff}{\mathbf{s}}
+
+\newcommand{\isone}[1]{{\boldsymbol{1}\left( #1 \right)}}
+\renewcommand{\Pr}[1]{{\mathbb{P}\left(#1\right) }}
+\newcommand{\f}[1]{{f\left(#1\right) }}
+\newcommand{\Prcond}[2]{{\mathbb{P}\left(#1\vphantom{#2}\;\right|\left.\vphantom{#1}#2\right)}}
+\newcommand{\fcond}[2]{{f\left(#1|#2\right) }}
+\newcommand{\Expected}[1]{{\mathbb{E}\left\{#1\right\}}}
+\newcommand{\ExpectedCond}[2]{{\mathbb{E}\left\{#1\vphantom{#2}\right|\left.\vphantom{#1}#2\right\}}}
+\renewcommand{\exp}[1]{\mbox{exp}\left\{#1\right\}}
+
+\newcommand{\Likelihood}[2]{\text{L}\left(#1 \left|\vphantom{#1}#2\right.\right)}
+
+\newcommand{\loglik}[1]{l\left(#1\right)}
+\newcommand{\logit}[1]{\mbox{logit}\left(#1\right)}
+\newcommand{\chng}[1]{\delta\left(y_{#1}:0\to1\right)}
+
+\newcommand{\pgraph}{\mathbf{x}}
+\newcommand{\snamed}[2]{\s{#1}_{\mbox{#2}}}
+
+
+\begin{equation}
+	\logit{\Pr{y_{ij} = 1|y_{-ij}}} = \transpose{\theta}\Delta\chng{ij},
+\end{equation}
+
+\noindent with $\chng{ij}\equiv \snamed{\mathbf{y}}{ij}^+ - \snamed{\mathbf{y}}{ij}^-$ as
+the vector of change statistics, in other words, the difference between the
+<!-- sufficient statistics when $y_{ij}=1$ and its value when $y_{ij} = 0$. To show
+this, we write the following:
+
+\begin{align*}
+	\Pr{y_{ij} = 1|y_{-ij}} & = %
+		\frac{\Pr{y_{ij} = 1, x_{-ij}}}{%
+			\Pr{y_{ij} = 1, y_{-ij}} + \Pr{y_{ij} = 0, y_{-ij}}} \\
+		& = \frac{\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}}}{%
+			\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}} + \exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}
+\end{align*}
+
+Applying the logit function to the previous equation, we obtain:
+
+\begin{align*}
+& = \log{\frac{\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}}}{%
+		\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}} + %
+		\exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}} - %
+	\log{ %
+		\frac{\exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}{%
+			\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}} + \exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}%
+	 } \\
+ & = \log{\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}}} - \log{\exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}} \\
+ & = \transpose{\theta}\left(\s{\mathbf{y}}^+_{ij} - \s{\mathbf{y}}^-_{ij}\right) \\
+ & = \transpose{\theta}\Delta\chng{ij}
+\end{align*}
+\noindent Henceforth, the conditional probability of node $n$ gaining function $k$ can be written as: -->
+
+\begin{equation}
+	\Pr{y_{ij} = 1|y_{-ij}} = \frac{1}{1 + \exp{-\transpose{\theta}\Delta\chng{ij}}}
+\end{equation}
+
+
 ## Examples of change statistics
 
-- Number of edges:
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+set.seed(1244)
+id <- sample.int(ecount(UKfaculty), 1)
 
-- Reciprocity (mutuality):
+set.seed(323)
+rmtie <- nplot(
+  UKfaculty,
+  edge.line.breaks = 20,
+  vertex.color     = "lightblue", 
+  edge.width       = ifelse(
+    1:ecount(UKfaculty) == id,
+    50,
+    10
+    ),
+  edge.width.range = c(1, 5),
+  edge.color = ifelse(
+    1:ecount(UKfaculty) == id,
+    "tomato",
+    adjustcolor("yellow", alpha.f = .2)
+  ),
+  skip.vertex = TRUE,
+  bg.col = "black"
+  )
 
-- Transitive triples:
+print(rmtie)
+```
 
-- Gender homophily:
+Let's look into the change statistics **edgecount**, **triangles**, and **gender-homophily** when we remove tie `33-69`.
+
+
+
+
+## Using ergm
+
+```{r}
+#| label: again-removed-tie
+#| echo: false
+#| cache: true
+#| fig-align: center
+print(rmtie)
+```
+
+::: {style="font-size:65%"} 
+
+```{r}
+library(ergm)
+library(intergraph)
+net1 <- asNetwork(UKfaculty)
+net2 <- network::network.copy(net1)
+
+network::delete.edges(net2, id)
+
+c1 <- summary_formula(net1 ~ edges + triangles + nodematch("Group"))
+c2 <- summary_formula(net2 ~ edges + triangles + nodematch("Group"))
+
+knitr::kable(
+  data.table::data.table(
+    "s()" = c("Edgecount", "Triangles", "Group-homophily"),
+    "y-" = c2,
+    "y+" = c1,
+    "change" = c1 - c2
+  )
+)
+```
+
+:::
+
 
 
 ## Current implemented models
