@@ -36,9 +36,29 @@ You can download the slides from<br>[ggv.cl/slides/sci2023](https://ggv.cl/slide
 
 - **What**: An R package for network visualization inspired by [Gephi](https://gephi.org).
 
-- **Why**: Opinionated way to visualize graphs.
+- **Why**: Opinionated way to visualize graphs.[^why]
+
+[^why]: And also,... because.
 
 - **Where**: You can get the dev version on GitHub ([USCCANA/netplot](https://github.com/USCCANA/netplot)) or the stable version on CRAN.
+
+## Other things to consider
+
+::: {style="font-size:65%"}
+
+In the case of `ggplot2` (and thus, `ggraph`)
+
+- Patterns in R's grid system are not directly available.[^ggpattern]
+
+> While ggplot2 uses grid underneath it’s grammar API, these features are generally not directly available in ggplot2.<br>--  Thomas Lin Pedersen, author of [`ggraph`](https://cran.r-project.org/package=ggraph){target="_blank"} (source: [tidyverse.org](https://www.tidyverse.org/blog/2022/02/new-graphic-features/){target="_blank"})
+
+[^ggpattern]: See also [`ggpattern`](https://cran.r-project.org/package=ggpattern){target="_blank"}
+
+- But the [`gggrid`](https://cran.r-project.org/package=gggrid){target="_blank"} package does:
+
+> The 'ggplot2' package does not yet have an interface for pattern fills, but the 'gggrid' package (Murrell, 2022) allows us to combine raw 'grid' output with the 'ggplot2' plot.<br>-- Paul Murrel, author of [`grid`](https://stat.ethz.ch/R-manual/R-devel/library/grid/html/00Index.html) (source: [Vectorised Pattern Fills in R Graphics](https://www.stat.auckland.ac.nz/~paul/Reports/GraphicsEngine/vecpat/vecpat.html){target="_blank"})
+
+:::
 
 ## Main features
 
@@ -106,6 +126,54 @@ nplot(
 ```
 
 :::
+
+
+## How? (cont)
+
+::: {.columns}
+
+::: {.column width="50%"}
+Things to notice:
+
+- Vertex size autoscaled to the device size.
+
+- Edged colored mixing ego and alter (source+target.)
+
+- Edges change colors continuously (gradient.)
+
+- Vertices and edges sizes scale as required by the user.
+:::
+
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+set.seed(323)
+# Netplot call
+nplot(
+  UKfaculty,
+  edge.line.breaks = 20,
+  vertex.color     = vcols
+  )
+```
+:::
+
+:::
+
+## Structure
+
+Graphical objects (Grobs)
+
+```{r}
+#| echo: false
+np <- nplot(
+  UKfaculty,
+  edge.line.breaks = 20,
+  vertex.color     = vcols
+  )
+invisible(head(str(np, max.level = 2)))
+```
 
 ## Challenges and Next steps
 
