@@ -14,8 +14,14 @@ format:
     transition: slide
     transition-speed: fast
     reveal_plugins: ["menu"]
-    footer: george.vegayon at utah -- https://ggvy.cl
+    footer: george.vegayon at utah -- https://ggvy.cl/slides/sci2023
     embed-resources: true
+    logo: 'figures/ukfaculty.svg'
+    title-slide-attributes: 
+      data-background-image: 'figures/ukfaculty.svg'
+      data-background-opacity: 25%
+      data-background-size: 50%
+      data-background-position: top right
 ---
 
 ## Whoami
@@ -26,10 +32,14 @@ format:
 
 - Methodologist working at the intersection between Statistical Computing and Complex Systems Modeling.
 
-# Network visualization with netplot
-
 ::: {.absolute bottom=-200 right=0}
 You can download the slides from<br>[ggv.cl/slides/sci2023](https://ggv.cl/slides/sci2023)
+:::
+
+# Network visualization with netplot {background-color="black" style="font-color: white"}
+
+::: {style="text-align:right"}
+![](https://github.com/USCCANA/netplot/raw/46452f8a7adcf0c6ece73d08748d9dbffb43c079/man/figures/README-us-airports-1.png){width="60%"}
 :::
 
 ## **netplot** In a nutshell
@@ -261,7 +271,11 @@ gridExtra::grid.arrange(
 
 - Porter Bischof (Undergrad from UVU) will contribute and present at the INSNA Sunbelt conference (flagship conference of SNA).
 
-# Counting motifs with barry
+# Counting motifs with barry {background-color="black"}
+
+::: {style="text-align:right"}
+![](https://github.com/USCbiostats/barry/raw/209575e80a6de7bba1937344f6fbf6a89e389447/design/logo.svg){width="30%"}
+:::
 
 ## **barry** in a nutshell
 
@@ -275,7 +289,7 @@ gridExtra::grid.arrange(
 
 About 11 K lines of C++ code built for statistical modeling:
 
-- Motif count using change statistics (we will return to that.)
+- Motif count using **change statistics** (we will return to that.)
 
 - Full and constrained enumeration of 0/1 arrays.
 
@@ -283,90 +297,23 @@ About 11 K lines of C++ code built for statistical modeling:
 
 - Memory and computationally efficient for pooled models.
 
-## Change statistics
+## Avoiding double counts
 
-- Change statistics are at the core of ERGMs (Exponential-Family Random Graph Models).
+::: {.columns style="font-size: 24pt"}
 
-- Two great applications:(i) make counting easy and (ii) can be used for sampling from ERGM likelihood function.
+::: {.column width="40%"}
+- A fundamental feature of pooled models (multiple graphs/arrays).
+- A single model may feature thousands of networks.
+- But if all have the same number of nodes (and other features)... we only need to enumerate once.
+:::
 
-## Change statistics formals
+::: {.column width="60%"}
+<img src="https://github.com/USCbiostats/barry/raw/209575e80a6de7bba1937344f6fbf6a89e389447/design/ergm-computing.svg" width="100%">
 
-- The change statistic is defined as a real-valued vector where the $k$-th entry equals the observed change when the $ij$-th tie is removed from the network. Formally:
+:::
 
-    $$
-    \delta(y_{ij}: 0\to 1) = s(\mathbf{y})_{ij}^+ - s(\mathbf{y})_{ij}^-
-    $$
+:::
 
-  Where $s(\cdot)$ is a function returning graph $\mathbf{y}$'s observed statistics, and $s(\mathbf{y})_{ij}^+$ represents its value when $y_{ij} = 1$.
-
-## Formals 2
-
-\newcommand{\sufstats}[1]{s\left(#1\right)}
-\renewcommand{\exp}[1]{\mbox{exp}\left\{#1\right\}}
-\renewcommand{\log}[1]{\mbox{log}\left\{#1\right\}}
-\newcommand{\transpose}[1]{{#1}^\mathbf{t}}
-\renewcommand{\t}[1]{\transpose{#1}}
-
-\newcommand{\s}[1]{\sufstats{#1}}
-\newcommand{\SUFF}{\mathcal{S}}
-\newcommand{\Suff}{\mathbf{S}}
-\newcommand{\suff}{\mathbf{s}}
-
-\newcommand{\isone}[1]{{\boldsymbol{1}\left( #1 \right)}}
-\renewcommand{\Pr}[1]{{\mathbb{P}\left(#1\right) }}
-\newcommand{\f}[1]{{f\left(#1\right) }}
-\newcommand{\Prcond}[2]{{\mathbb{P}\left(#1\vphantom{#2}\;\right|\left.\vphantom{#1}#2\right)}}
-\newcommand{\fcond}[2]{{f\left(#1|#2\right) }}
-\newcommand{\Expected}[1]{{\mathbb{E}\left\{#1\right\}}}
-\newcommand{\ExpectedCond}[2]{{\mathbb{E}\left\{#1\vphantom{#2}\right|\left.\vphantom{#1}#2\right\}}}
-\renewcommand{\exp}[1]{\mbox{exp}\left\{#1\right\}}
-
-\newcommand{\Likelihood}[2]{\text{L}\left(#1 \left|\vphantom{#1}#2\right.\right)}
-
-\newcommand{\loglik}[1]{l\left(#1\right)}
-\newcommand{\logit}[1]{\mbox{logit}\left(#1\right)}
-\newcommand{\chng}[1]{\delta\left(y_{#1}:0\to1\right)}
-
-\newcommand{\pgraph}{\mathbf{x}}
-\newcommand{\snamed}[2]{\s{#1}_{\mbox{#2}}}
-
-
-\begin{equation}
-	\logit{\Pr{y_{ij} = 1|y_{-ij}}} = \transpose{\theta}\Delta\chng{ij},
-\end{equation}
-
-\noindent with $\chng{ij}\equiv \snamed{\mathbf{y}}{ij}^+ - \snamed{\mathbf{y}}{ij}^-$ as
-the vector of change statistics, in other words, the difference between the
-<!-- sufficient statistics when $y_{ij}=1$ and its value when $y_{ij} = 0$. To show
-this, we write the following:
-
-\begin{align*}
-	\Pr{y_{ij} = 1|y_{-ij}} & = %
-		\frac{\Pr{y_{ij} = 1, x_{-ij}}}{%
-			\Pr{y_{ij} = 1, y_{-ij}} + \Pr{y_{ij} = 0, y_{-ij}}} \\
-		& = \frac{\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}}}{%
-			\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}} + \exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}
-\end{align*}
-
-Applying the logit function to the previous equation, we obtain:
-
-\begin{align*}
-& = \log{\frac{\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}}}{%
-		\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}} + %
-		\exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}} - %
-	\log{ %
-		\frac{\exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}{%
-			\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}} + \exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}%
-	 } \\
- & = \log{\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}}} - \log{\exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}} \\
- & = \transpose{\theta}\left(\s{\mathbf{y}}^+_{ij} - \s{\mathbf{y}}^-_{ij}\right) \\
- & = \transpose{\theta}\Delta\chng{ij}
-\end{align*}
-\noindent Henceforth, the conditional probability of node $n$ gaining function $k$ can be written as: -->
-
-\begin{equation}
-	\Pr{y_{ij} = 1|y_{-ij}} = \frac{1}{1 + \exp{-\transpose{\theta}\Delta\chng{ij}}}
-\end{equation}
 
 
 ## Examples of change statistics
@@ -453,22 +400,6 @@ knitr::kable(
 
 - Modeling the **evolution of gene functions** in terms of transition between functional states (research grant submitted to National Human Genome Research Institute [NHGRI](https://genome.gov)).
 
-## ERGMs
-
-::: {.columns style="font-size: 24pt"}
-
-::: {.column width="40%"}
-- A fundamental feature of pooled models (multiple graphs/arrays).
-- A single model may feature thousands of networks.
-- But if all have the same number of nodes (and other features)... we only need to enumerate once.
-:::
-
-::: {.column width="60%"}
-<img src="https://github.com/USCbiostats/barry/raw/209575e80a6de7bba1937344f6fbf6a89e389447/design/ergm-computing.svg" width="100%">
-
-:::
-
-:::
 
 # Final words
 
@@ -491,7 +422,101 @@ knitr::kable(
 [**`slurmR`**](https://cran.r-project.org/package=slurmR) |
 [**`barry`**](https://github.com/USCbiostats/barry) |
 [**`rgexf`**](https://cran.r-project.org/package=rgexf) |
-[**`rgexf`**](https://github.com/USCbiostats/geese)
+[**`geese`**](https://github.com/USCbiostats/geese)
 </p>
 
+## Other projects (cont.)
+
+::: {style="font-size: 80%"}
+
+Using [`rgexf`](https://cran.r-project.org/package=rgexf) (my most popular R package w/ 600K downloads)
+
+[![](figures/rgexf-sunbelt.png){width="60%"}](https://gvegayon.github.io/gallery/20220700-sunbelt/gexfjs/){target="_blank"}
+
+**Networks co-session network at INSNA's Sunbelt 2022**: Nodes are colored according to their roles: speaker, session chair, and session organizer.--(source: [gvegayon/gallery](https://github.com/gvegayon/gallery/tree/master/20220700-sunbelt){target="_blank"})
+
+:::
+
 ## Thanks!
+
+\appendix
+
+
+## A1. Change statistics formals
+
+- The change statistic is defined as a real-valued vector where the $k$-th entry equals the observed change when the $ij$-th tie is removed from the network. Formally:
+
+    $$
+    \delta(y_{ij}: 0\to 1) = s(\mathbf{y})_{ij}^+ - s(\mathbf{y})_{ij}^-
+    $$
+
+  Where $s(\cdot)$ is a function returning graph $\mathbf{y}$'s observed statistics, and $s(\mathbf{y})_{ij}^+$ represents its value when $y_{ij} = 1$.
+
+## A1. Change statistics formals (cont.)
+
+Furthermore, conditioning on the rest of the network (or array,) a tie transition probability equates a logit:
+
+\newcommand{\sufstats}[1]{s\left(#1\right)}
+\renewcommand{\exp}[1]{\mbox{exp}\left\{#1\right\}}
+\renewcommand{\log}[1]{\mbox{log}\left\{#1\right\}}
+\newcommand{\transpose}[1]{{#1}^\mathbf{t}}
+\renewcommand{\t}[1]{\transpose{#1}}
+
+\newcommand{\s}[1]{\sufstats{#1}}
+\newcommand{\SUFF}{\mathcal{S}}
+\newcommand{\Suff}{\mathbf{S}}
+\newcommand{\suff}{\mathbf{s}}
+
+\newcommand{\isone}[1]{{\boldsymbol{1}\left( #1 \right)}}
+\renewcommand{\Pr}[1]{{\mathbb{P}\left(#1\right) }}
+\newcommand{\f}[1]{{f\left(#1\right) }}
+\newcommand{\Prcond}[2]{{\mathbb{P}\left(#1\vphantom{#2}\;\right|\left.\vphantom{#1}#2\right)}}
+\newcommand{\fcond}[2]{{f\left(#1|#2\right) }}
+\newcommand{\Expected}[1]{{\mathbb{E}\left\{#1\right\}}}
+\newcommand{\ExpectedCond}[2]{{\mathbb{E}\left\{#1\vphantom{#2}\right|\left.\vphantom{#1}#2\right\}}}
+\renewcommand{\exp}[1]{\mbox{exp}\left\{#1\right\}}
+
+\newcommand{\Likelihood}[2]{\text{L}\left(#1 \left|\vphantom{#1}#2\right.\right)}
+
+\newcommand{\loglik}[1]{l\left(#1\right)}
+\newcommand{\logit}[1]{\mbox{logit}\left(#1\right)}
+\newcommand{\chng}[1]{\delta\left(y_{#1}:0\to1\right)}
+
+\newcommand{\pgraph}{\mathbf{x}}
+\newcommand{\snamed}[2]{\s{#1}_{\mbox{#2}}}
+
+
+\begin{equation}
+	\logit{\Pr{y_{ij} = 1|y_{-ij}}} = \transpose{\theta}\Delta\chng{ij},
+\end{equation}
+
+<!-- sufficient statistics when $y_{ij}=1$ and its value when $y_{ij} = 0$. To show
+this, we write the following:
+
+\begin{align*}
+	\Pr{y_{ij} = 1|y_{-ij}} & = %
+		\frac{\Pr{y_{ij} = 1, x_{-ij}}}{%
+			\Pr{y_{ij} = 1, y_{-ij}} + \Pr{y_{ij} = 0, y_{-ij}}} \\
+		& = \frac{\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}}}{%
+			\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}} + \exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}
+\end{align*}
+
+Applying the logit function to the previous equation, we obtain:
+
+\begin{align*}
+& = \log{\frac{\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}}}{%
+		\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}} + %
+		\exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}} - %
+	\log{ %
+		\frac{\exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}{%
+			\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}} + \exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}}%
+	 } \\
+ & = \log{\exp{\transpose{\theta}\s{\mathbf{y}}^+_{ij}}} - \log{\exp{\transpose{\theta}\s{\mathbf{y}}^-_{ij}}} \\
+ & = \transpose{\theta}\left(\s{\mathbf{y}}^+_{ij} - \s{\mathbf{y}}^-_{ij}\right) \\
+ & = \transpose{\theta}\Delta\chng{ij}
+\end{align*}
+\noindent Henceforth, the conditional probability of node $n$ gaining function $k$ can be written as: -->
+
+\begin{equation}
+	\Pr{y_{ij} = 1|y_{-ij}} = \frac{1}{1 + \exp{-\transpose{\theta}\Delta\chng{ij}}}
+\end{equation}
