@@ -419,11 +419,18 @@ In the case of `ggplot2` (and thus, `ggraph`)
 
 "*Your go-to motif accountant*"[^whybarry]
 
+::: {.columns}
+
+::: {.column width=80%}
+
 - **What**: A C++ header-only template library for motif counting (and more.)
 
 - **Why**: Implement Discrete Exponential Family Models [DEFMs] for phylogenetics and social networks analysis.
 
 - **Where**: You can get it on GitHub ([USCBiostats/barry](https://github.com/USCbiostats/barry))
+:::
+
+:::
 
 [^whybarry]: Checkout Seinfeld's ["*The Sniffing Accountant*"](https://en.wikipedia.org/wiki/The_Sniffing_Accountant){target="_blank"}
 
@@ -449,7 +456,7 @@ About 11 K lines of C++ code built for statistical modeling:
 :::
 
 ::: {.fragment}
-- Probability function for Discrete Exponential-Family Models [DEFMs].
+- Probability function for Discrete Exponential-Family Models \[DEFMs\].
 :::
 
 ::: {.fragment}
@@ -460,7 +467,38 @@ About 11 K lines of C++ code built for statistical modeling:
 
 ## DEFMs
 
-![](https://github.com/gvegayon/laerug-ergms-june2019/raw/74c183c91ebe9fdb3955499df99e1f6cc6c50425/fig/parts-of-ergm.svg)
+::: {.columns style="font-size: 80%"}
+
+::: {.column width=50%}
+::: {.fragment}
+- Basic idea: Entries in an array are not IID
+:::
+
+::: {.fragment}
+- Highly-developed through ERGMs.
+:::
+
+::: {.fragment}
+- Not about individual entries, but about patterns.
+:::
+
+::: {.fragment}
+- Help reducing computational complexity and improving interpretation  (\# of parameters)
+:::
+
+:::
+
+::: {.column width=50%}
+![](figures/adjmat-network.png)
+:::
+
+:::
+
+## DEFMs as ERGMs
+
+![](https://github.com/gvegayon/laerug-ergms-june2019/raw/74c183c91ebe9fdb3955499df99e1f6cc6c50425/fig/parts-of-ergm.svg){width="90%" style="text-align: center"}
+
+A key component for fitting these models are *change statistics*.
 
 ## Features: Change statistics
 
@@ -536,9 +574,15 @@ knitr::kable(
 ::: {.columns style="font-size: 24pt"}
 
 ::: {.column width="40%"}
+::: {.fragment}
 - A fundamental feature of pooled models (multiple graphs/arrays).
+:::
+::: {.fragment}
 - A single model may feature thousands of networks.
+:::
+::: {.fragment}
 - But if all have the same number of nodes (and other features)... we only need to enumerate once.
+:::
 :::
 
 ::: {.column width="60%"}
@@ -586,7 +630,7 @@ flowchart LR
 
 ::: {style="font-size:80%"}
 
-- Computationally intensive
+- Computationally intensive.
 
 - Biggest model calculated featured a matrix with 30 entries, *i.e.* $2^{30} = 1,073,741,824$ (just over a billion) and took about 5 minutes.
 
@@ -646,6 +690,7 @@ In principle, any dataset we can represent as 0/1 arrays can be modeled with `ba
 :::
 
 - Modeling the **evolution of gene functions** in terms of transition between functional states (research grant submitted to National Human Genome Research Institute [NHGRI](https://genome.gov)).
+
 
 ## Other projects
 
