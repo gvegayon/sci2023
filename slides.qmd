@@ -141,7 +141,7 @@ Things to notice:
 
 - Edges change colors continuously (gradient.)
 
-- Vertices and edges sizes scale as required by the user.
+- Vertices and edges' sizes scale as required by the user.
 :::
 
 
@@ -173,6 +173,86 @@ np <- nplot(
   vertex.color     = vcols
   )
 invisible(head(str(np, max.level = 2)))
+```
+
+## Example 2: Playing with patterns
+
+```{r}
+#| echo: false
+#| label: various-patterns
+#| cache: true
+#| fig-cap: 'netplot supports advanced patterns. The figures feature radial gradients (vertices), lineal gradients, and repeated patterns (background).'
+pattern1 <- pattern(
+  circleGrob(r=unit(1, "mm"), gp=gpar(fill="lightgray", col = "transparent")),
+  width = unit(3, "mm"), height=unit(3, "mm"),
+  extend="repeat"
+  )
+
+set.seed(323)
+# Netplot call
+p1 <- nplot(
+  UKfaculty,
+  edge.line.breaks = 20,
+  vertex.color     = vcols,
+  vertex.size.range = c(.025, .075)
+  )
+
+set.seed(323)
+# Netplot call
+p2 <- nplot(
+  UKfaculty,
+  edge.line.breaks = 20,
+  vertex.color     = vcols,
+  bg.col           = pattern1,
+  vertex.size.range = c(.025, .075)
+  ) |> set_vertex_gpar(
+    element = "core",
+    fill = lapply(get_vertex_gpar(p1, "frame", "col")$col, \(i) {
+      radialGradient(c("white", i), cx1=.8, cy1=.8, r1=0)
+      }))
+
+p3 <- nplot(
+  UKfaculty,
+  edge.line.breaks = 20,
+  vertex.color     = vcols,
+  bg.col = linearGradient(c("blue", "white", "yellow")),
+  vertex.size.range = c(.025, .075)
+  )
+
+gradient_rec <- rectGrob(
+  width = 0.1, 
+  height = 0.1, 
+  gp = gpar(fill = linearGradient(
+    grDevices::adjustcolor(c("firebrick", "steelblue"), alpha.f = .5)
+    )
+    )
+)
+
+pattern2 <- pattern(
+  gradient_rec, 
+  width = 0.15, 
+  height = 0.15, 
+  extend = "reflect"
+)
+
+set.seed(323)
+# Netplot call
+p4 <- nplot(
+  UKfaculty,
+  edge.line.breaks = 20,
+  vertex.color     = vcols,
+  bg.col           = pattern2,
+  vertex.size.range = c(.025, .075)
+  ) |> set_vertex_gpar(
+    element = "core",
+    fill = lapply(get_vertex_gpar(p1, "frame", "col")$col, \(i) {
+      radialGradient(c("white", i), cx1=.8, cy1=.8, r1=0)
+      }))
+
+gridExtra::grid.arrange(
+  p1, p2, p3, p4, 
+  nrow = 2, ncol = 2
+)
 ```
 
 ## Challenges and Next steps
