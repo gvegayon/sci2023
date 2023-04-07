@@ -458,6 +458,10 @@ About 11 K lines of C++ code built for statistical modeling:
 
 :::
 
+## DEFMs
+
+![](https://github.com/gvegayon/laerug-ergms-june2019/raw/74c183c91ebe9fdb3955499df99e1f6cc6c50425/fig/parts-of-ergm.svg)
+
 ## Features: Change statistics
 
 ```{r}
