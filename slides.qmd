@@ -52,23 +52,46 @@ You can download the slides from<br>[ggv.cl/slides/sci2023](https://ggv.cl/slide
 
 - **Where**: You can get the dev version on GitHub ([USCCANA/netplot](https://github.com/USCCANA/netplot)) or the stable version on CRAN.
 
-## Other things to consider
 
-::: {style="font-size:65%"}
+## **netplot** In a nutshell (cont.) {.scrollable}
 
-In the case of `ggplot2` (and thus, `ggraph`)
+Current parameters in `nplot` (main function)
 
-- Patterns in R's grid system are not directly available.[^ggpattern]
-
-> While ggplot2 uses grid underneath it’s grammar API, these features are generally not directly available in ggplot2.<br>--  Thomas Lin Pedersen, author of [`ggraph`](https://cran.r-project.org/package=ggraph){target="_blank"} (source: [tidyverse.org](https://www.tidyverse.org/blog/2022/02/new-graphic-features/){target="_blank"})
-
-[^ggpattern]: See also [`ggpattern`](https://cran.r-project.org/package=ggpattern){target="_blank"}
-
-- But the [`gggrid`](https://cran.r-project.org/package=gggrid){target="_blank"} package does:
-
-> The 'ggplot2' package does not yet have an interface for pattern fills, but the 'gggrid' package (Murrell, 2022) allows us to combine raw 'grid' output with the 'ggplot2' plot.<br>-- Paul Murrel, author of [`grid`](https://stat.ethz.ch/R-manual/R-devel/library/grid/html/00Index.html) (source: [Vectorised Pattern Fills in R Graphics](https://www.stat.auckland.ac.nz/~paul/Reports/GraphicsEngine/vecpat/vecpat.html){target="_blank"})
-
-:::
+```r
+nplot(
+  edgelist,
+  layout,
+  vertex.size             = 1,
+  bg.col                  = "transparent",
+  vertex.nsides           = 10,
+  vertex.color            = grDevices::hcl.colors(1),
+  vertex.size.range       = c(0.01, 0.03),
+  vertex.frame.color      = ...,
+  vertex.rot              = 0,
+  vertex.frame.prop       = 0.2,
+  vertex.label            = NULL,
+  vertex.label.fontsize   = NULL,
+  vertex.label.color      = "black",
+  vertex.label.fontfamily = "HersheySans",
+  vertex.label.fontface   = "bold",
+  vertex.label.show       = 0.3,
+  vertex.label.range      = c(5, 15),
+  edge.width              = 1,
+  edge.width.range        = c(1, 2),
+  edge.arrow.size         = NULL,
+  edge.color              = ~ego(alpha = 0.25, col = "gray") + alter,
+  edge.curvature          = pi/3,
+  edge.line.lty           = "solid",
+  edge.line.breaks        = 5,
+  sample.edges            = 1,
+  skip.vertex             = FALSE,
+  skip.edges              = FALSE,
+  skip.arrows             = skip.edges,
+  add                     = FALSE,
+  zero.margins            = TRUE,
+  ...
+)
+```
 
 ## Main features
 
@@ -265,11 +288,29 @@ gridExtra::grid.arrange(
 )
 ```
 
-## Challenges and Next steps
+## Other things to consider
+
+::: {style="font-size:65%"}
+
+In the case of `ggplot2` (and thus, `ggraph`)
+
+- Patterns in R's grid system are not directly available.[^ggpattern]
+
+> While ggplot2 uses grid underneath it’s grammar API, these features are generally not directly available in ggplot2.<br>--  Thomas Lin Pedersen, author of [`ggraph`](https://cran.r-project.org/package=ggraph){target="_blank"} (source: [tidyverse.org](https://www.tidyverse.org/blog/2022/02/new-graphic-features/){target="_blank"})
+
+[^ggpattern]: See also [`ggpattern`](https://cran.r-project.org/package=ggpattern){target="_blank"}
+
+- But the [`gggrid`](https://cran.r-project.org/package=gggrid){target="_blank"} package does:
+
+> The 'ggplot2' package does not yet have an interface for pattern fills, but the 'gggrid' package (Murrell, 2022) allows us to combine raw 'grid' output with the 'ggplot2' plot.<br>-- Paul Murrel, author of [`grid`](https://stat.ethz.ch/R-manual/R-devel/library/grid/html/00Index.html) (source: [Vectorised Pattern Fills in R Graphics](https://www.stat.auckland.ac.nz/~paul/Reports/GraphicsEngine/vecpat/vecpat.html){target="_blank"})
+
+:::
+
+<!-- ## Challenges and Next steps
 
 - Speed up the code: `grid` objects can be computationally expensive to build.
 
-- Porter Bischof (Undergrad from UVU) will contribute and present at the INSNA Sunbelt conference (flagship conference of SNA).
+- Porter Bischof (Undergrad from UVU) will contribute and present at the INSNA Sunbelt conference (flagship conference of SNA). -->
 
 # Counting motifs with barry {background-color="black"}
 
@@ -411,16 +452,40 @@ flowchart LR
 
 :::
 
-## Current implemented models
+## Current implemented models {style="font-size:75%"}
 
-- Exponential-Family Random Graph Models [**ERGMs**].
+
+::: {style="text-align: center"}
+![](figures/data-examples.svg)
+:::
+
+In principle, any dataset we can represent as 0/1 arrays can be modeled with `barry`. We have applications in social networks, phylogenetics, and health outcomes.
+
+
+## Current implemented models: DEFMs {style="font-size:75%"}
+
+::: {style="text-align: center"}
+![](figures/defm-table.png){width="90%"}
+:::
 
 - **DEFMs** for multiple correlated outcomes (Markov Random Fields; on development with Drs. [MJ Pugh](https://medicine.utah.edu/internal-medicine/epidemiology/research-programs/torch) and [Tom Valente](https://keck.usc.edu/faculty-search/thomas-william-valente/).)
 
+## Current implemented models: Social networks {style="font-size:75%"}
+
+::: {style="text-align: center"}
+![](figures/imaginary-motifs-nets.png)
+:::
+
 - Motif counting applied to counting **"*imaginary motifs*"** in Cognitive Social Structures [CSS] (with [Dr. Kyosuke Tanaka](https://kyosuketanaka.com/), submitted to [Social Networks](https://www.sciencedirect.com/journal/social-networks)).
 
-- Modeling the **evolution of gene functions** in terms of transition between functional states (research grant submitted to National Human Genome Research Institute [NHGRI](https://genome.gov)).
 
+## Current implemented models: Phylogenetics {style="font-size:75%"}
+
+::: {style="text-align: center"}
+![](figures/geese-motifs-table.png)
+:::
+
+- Modeling the **evolution of gene functions** in terms of transition between functional states (research grant submitted to National Human Genome Research Institute [NHGRI](https://genome.gov)).
 
 # Final words
 
