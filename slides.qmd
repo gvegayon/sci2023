@@ -487,14 +487,6 @@ In principle, any dataset we can represent as 0/1 arrays can be modeled with `ba
 
 - Modeling the **evolution of gene functions** in terms of transition between functional states (research grant submitted to National Human Genome Research Institute [NHGRI](https://genome.gov)).
 
-# Final words
-
-## Today's talk
-
-- The netplot R package for graph visualization.
-
-- barry: Your go-to motif accountant.
-
 ## Other projects
 
 ![](https://github.com/gvegayon/gvegayon/raw/887c6a31e950733f9ba48a039b8636eb91629b63/hexlogos.png)
@@ -523,9 +515,16 @@ Using [`rgexf`](https://cran.r-project.org/package=rgexf) (my most popular R pac
 
 :::
 
-## Thanks!
+## Thanks! {background-color="lightgray"}
 
-\appendix
+::: {style="text-align:center!important;"}
+![](https://github.com/UofUEpiBio/PHS7045-advanced-programming/raw/22b0bab33ae7018cbee8d0e4797062ba644f9c8e/projects/10-walking-dead/walking-dead.gif)
+
+{{< fa brands github >}}  [gvegayon](https://github.com/gvegayon/) <br>
+{{< fa brands twitter >}}  [\@gvegayon](https://twitter.com/gvegayon) <br>
+{{< fa home >}}  [ggvy.cl](https://ggvy.cl)<br><br>
+<text style="color:gray;font-size:80%">Presentation created with [quarto::revealjs](https:cran.r-project.org/package=quarto)</text>
+:::
 
 
 ## A1. Change statistics formals
