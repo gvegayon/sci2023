@@ -297,26 +297,8 @@ About 11 K lines of C++ code built for statistical modeling:
 
 - Memory and computationally efficient for pooled models.
 
-## Avoiding double counts
 
-::: {.columns style="font-size: 24pt"}
-
-::: {.column width="40%"}
-- A fundamental feature of pooled models (multiple graphs/arrays).
-- A single model may feature thousands of networks.
-- But if all have the same number of nodes (and other features)... we only need to enumerate once.
-:::
-
-::: {.column width="60%"}
-<img src="https://github.com/USCbiostats/barry/raw/209575e80a6de7bba1937344f6fbf6a89e389447/design/ergm-computing.svg" width="100%">
-
-:::
-
-:::
-
-
-
-## Examples of change statistics
+## Features: Change statistics
 
 ```{r}
 #| echo: false
@@ -350,10 +332,7 @@ print(rmtie)
 
 Let's look into the change statistics **edgecount**, **triangles**, and **gender-homophily** when we remove tie `33-69`.
 
-
-
-
-## Using ergm
+## Features: Change statistics (cont.)
 
 ```{r}
 #| label: again-removed-tie
@@ -388,7 +367,49 @@ knitr::kable(
 
 :::
 
+## Features: Memory and Comp. Efficiency
 
+::: {.columns style="font-size: 24pt"}
+
+::: {.column width="40%"}
+- A fundamental feature of pooled models (multiple graphs/arrays).
+- A single model may feature thousands of networks.
+- But if all have the same number of nodes (and other features)... we only need to enumerate once.
+:::
+
+::: {.column width="60%"}
+<img src="https://github.com/USCbiostats/barry/raw/209575e80a6de7bba1937344f6fbf6a89e389447/design/ergm-computing.svg" width="100%">
+
+:::
+
+:::
+
+## Modeling
+
+::: {style="height: 80%"}
+
+```{mermaid}
+flowchart LR
+  start[Create the\nmodel] --> count[Add\ncounters]
+  count --> count_done{Done?}
+  count_done --> |Yes| const[Add\nconstraints]
+  count_done --> |No| count
+  const --> const_done{Done?}
+  const_done --> |Yes| init((End))
+  const_done --> |No| const
+```
+
+```{mermaid}
+flowchart LR
+  start[Hash the\narray] --> exists{Present?}
+  exists --> |Yes| ptr[[Link\nPointer]]
+  exists --> |No| addarray[[Compute\nsupport]]
+  ptr --> End((End))
+  addarray --> End
+```
+
+
+:::
 
 ## Current implemented models
 
